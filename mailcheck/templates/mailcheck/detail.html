@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load static %}
+
+{# This view is for internal consumption only - should never be seen by normal users. #}
+
+{% block title %}Mail Check{% endblock %}
+
+{% block extra_css %}
+  <style>
+    tt {
+      font-size: 1.2em;
+    }
+  </style>
+{% endblock extra_css %}
+
+{% block content %}
+
+  {% if user.is_authenticated %}
+
+    <div class="container-fluid">
+
+      <div class="card">
+        <div class="card-header">
+          Mail Check
+        </div>
+        <div class="card-body">
+          <p>
+            This message would have gone out if this site sent live email:
+          </p>
+
+          <div class="card">
+            <div class="card-header">
+              {{ email.msg_subject }}
+            </div>
+            <div class="card-body">
+              <tt>
+                <div class="mb-4">
+                  Subject: {{ email.msg_subject }}<br />
+                  Date: {{ email.msg_date }}<br />
+                  To: {{ email.msg_to }}<br />
+                  From: {{ email.msg_from }}
+                </div>
+
+                <div>
+                  {{ email.msg_body|linebreaks }}
+                </div>
+              </tt>
+
+            </div>
+          </div>
+
+          <p>
+            <a href="{% url "mailcheck:index" %}" class="btn btn-sm btn-primary">Return to message list</a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+  {% endif %}
+{% endblock content %}
+
